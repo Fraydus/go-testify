@@ -48,7 +48,7 @@ func mainHandle(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(answer))
 }
 
-func TestMainHandlerWhenCountMoreThanOK(t *testing.T) {
+func TestMainHandlerOK(t *testing.T) {
 	req := httptest.NewRequest("Get", "/cafe?count=2&city=moscow", nil)
 
 	responseRecorder := httptest.NewRecorder()
@@ -62,7 +62,7 @@ func TestMainHandlerWhenCountMoreThanOK(t *testing.T) {
 
 func TestMainHandlerCityNotInList(t *testing.T) {
 	totalCount := 4
-	req := httptest.NewRequest("Get", "/cafe?count=0&city=omsk", nil)
+	req := httptest.NewRequest("Get", "/cafe?count=1&city=omsk", nil)
 
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
