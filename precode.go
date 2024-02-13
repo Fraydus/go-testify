@@ -48,6 +48,30 @@ func mainHandle(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(answer))
 }
 
+func TestMainHandlerWhenCountMoreThanOK(t *testing.T) {
+	req := httptest.NewRequest("Get", "/cafe?count=10&city=moscow", nil)
+
+	responseRecorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(mainHandle)
+	handler.ServeHTTP(responseRecorder, req)
+
+	status := responseRecorder.Code
+	assert.True(t, status != http.StatusOK, "expected status code: %d, got %d", http.StatusOK, status)
+	assert.NotNil(t, req.Body)
+}
+
+func testMainHandlerCityInList(t *testing.T) {
+	totalCount := 4
+	req := httptest.NewRequest("Get", "/cafe?count=10&city=moscow", nil)
+
+	responseRecorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(mainHandle)
+	handler.ServeHTTP(responseRecorder, req)
+
+	responseBody := strings.Split(responseRecorder.Body.String(), ",")
+	assert.Equal(t, totalCount, len(responseBody))
+}
+
 func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) {
 	totalCount := 4
 	req := httptest.NewRequest("GET", "/cafe?count=10&city=moscow", nil) // здесь нужно создать запрос к сервису
