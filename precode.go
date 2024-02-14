@@ -57,7 +57,7 @@ func TestMainHandlerOK(t *testing.T) {
 	handler.ServeHTTP(responseRecorder, req)
 
 	status := responseRecorder.Code
-	assert.Equal(t, http.StatusOK, status)
+	assert.Equal(t, status, http.StatusOK)
 	assert.NotNil(t, req.Body)
 }
 
