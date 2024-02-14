@@ -75,13 +75,14 @@ func TestMainHandlerCityNotInList(t *testing.T) {
 
 func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) {
 	totalCount := 4
-	req := httptest.NewRequest("GET", "/cafe?count=4&city=moscow", nil) // здесь нужно создать запрос к сервису
+	req := httptest.NewRequest("GET", "/cafe?count=10&city=moscow", nil) // здесь нужно создать запрос к сервису
 
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
 
 	// здесь нужно добавить необходимые проверки
+	assert.Equal(t, responseRecorder.Code, http.StatusOK)
 
 	responseBody := strings.Split(responseRecorder.Body.String(), ",")
 	assert.Equal(t, totalCount, len(responseBody))
